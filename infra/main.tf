@@ -111,9 +111,14 @@ resource "yandex_vpc_security_group" "security_group" {
   }
 }
 
+resource "random_id" "bucket_suffix" {
+  byte_length = 8
+}
+
 # Storage ресурсы
 resource "yandex_storage_bucket" "data_bucket" {
-  bucket        = "${var.yc_bucket_name}-${var.yc_folder_id}"
+  # bucket        = "${var.yc_bucket_name}-${random_id.bucket_suffix.hex}"
+  bucket        = "otus-bucket-d96c6f8b8b8aa500"
   access_key    = yandex_iam_service_account_static_access_key.sa-static-key.access_key
   secret_key    = yandex_iam_service_account_static_access_key.sa-static-key.secret_key
   force_destroy = true
