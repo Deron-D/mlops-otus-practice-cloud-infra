@@ -116,7 +116,10 @@ resource "yandex_storage_bucket" "data_bucket" {
   bucket        = "${var.yc_bucket_name}-${var.yc_folder_id}"
   access_key    = yandex_iam_service_account_static_access_key.sa-static-key.access_key
   secret_key    = yandex_iam_service_account_static_access_key.sa-static-key.secret_key
-  force_destroy = true
+  # force_destroy = true
+  lifecycle {
+    ignore_changes = all
+  }
 }
 
 # Dataproc ресурсы
@@ -166,7 +169,7 @@ resource "yandex_dataproc_cluster" "dataproc_cluster" {
         disk_size          = var.dataproc_data_resources.disk_size
       }
       subnet_id   = yandex_vpc_subnet.subnet.id
-      hosts_count = 1
+      hosts_count = 3
     }
 
     subcluster_spec {
